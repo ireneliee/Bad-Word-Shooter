@@ -2,6 +2,7 @@ import pygame
 import random
 from player import Player
 from mob import Mob
+from explosion import Explosion
 from os import path 
 
 #window setting
@@ -31,7 +32,7 @@ clock = pygame.time.Clock()
 clock = pygame.time.Clock()
 #Place all sprites into a group
 
-font_name = pygame.font.match_font('Monotype Corsiva')
+font_name = pygame.font.match_font('arial')
 
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
@@ -45,9 +46,9 @@ def create_shield_bar(surf, x, y, health):
         health = 0
     BAR_WIDTH = 100
     BAR_HEIGHT = 10
-
+    fill = (health / 100) * BAR_WIDTH
     rect_outside = pygame.Rect(x, y, BAR_WIDTH, BAR_HEIGHT)
-    rect_inside = pygame.Rect(x, y, health, BAR_HEIGHT)
+    rect_inside = pygame.Rect(x, y, fill, BAR_HEIGHT)
     pygame.draw.rect(surf, GREEN, rect_inside)
     pygame.draw.rect(surf, WHITE, rect_outside, 2)
 
@@ -55,6 +56,7 @@ def create_shield_bar(surf, x, y, health):
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
 bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
 sound_dir = path.join(path.dirname(__file__), "sound_folder")
+explosion_dir = path.join(path.dirname(__file__), "explosion_image_folder")
 
 # adding the resources file into the game
 spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png")).convert_alpha()
@@ -76,6 +78,18 @@ for image in meteor_list:
     meteor_img = pygame.image.load(path.join(bad_img_dir, image)).convert_alpha()
     meteor_images.append(meteor_img)
 
+explosion_anim = {}
+explosion_anim["lg"] = []
+explosion_anim["sm"] = []
+for i in range(9):
+    filename = "regularExplosion0{}.png".format(i)
+    img = pygame.image.load(path.join(explosion_dir, filename)).convert_alpha()
+    img_lg = pygame.transform.scale(img, (75, 75))
+    explosion_anim["lg"].append(img_lg)
+    img_sm = pygame.transform.scale(img, (32, 32))
+    explosion_anim["sm"].append(img_sm)
+
+
 def newMeteor():
     meteor = Mob(meteor_images)
     all_sprites.add(meteor)
@@ -90,7 +104,7 @@ for snd in explosion_list:
     explosion_sound.append(sound)
   
 pygame.mixer.music.load(path.join(sound_dir, "gameover.ogg"))   
-pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.set_volume(0.1)
 
 all_sprites = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
@@ -140,6 +154,8 @@ while running:
     for hit in hits:
         spaceship.shield -= hit.radius * 1
         random.choice(explosion_sound).play()
+        expl = Explosion(hit.rect.center, 'lg', explosion_anim)
+        all_sprites.add(expl)
         newMeteor()
         if spaceship.shield < 0:
             running: False

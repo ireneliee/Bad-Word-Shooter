@@ -1,6 +1,6 @@
 import pygame
 
-class Explosion(pygame.spirte.Spirte):
+class Explosion(pygame.sprite.Sprite):
     def __init__ (self, center, size, explosion_anim):
         self.explosion_anim = explosion_anim
         self.size = size
@@ -9,7 +9,7 @@ class Explosion(pygame.spirte.Spirte):
         self.rect.center = center
         self.frame = 0
         self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 50
+        self.frame_rate = 75
 
     def update(self):
         now = pygame.time.get_ticks()
