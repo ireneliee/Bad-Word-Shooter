@@ -17,7 +17,7 @@ YELLOW = (255,255,0)
 
 
 class GoodMob(pygame.sprite.Sprite):
-    def __init__ (self, meteor_images):
+    def __init__ (self, meteor_images, level):
         pygame.sprite.Sprite.__init__(self)
         meteor_img = random.choice(meteor_images)
 
@@ -33,8 +33,8 @@ class GoodMob(pygame.sprite.Sprite):
         self.radius = int(self.rect.width * 0.85 / 2)
         self.rect.x = random.randrange(WIDTH-self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speedy = random.randrange(1,8)
-        self.speedx = random.randrange(-3, 3)
+        self.speedy = random.randrange(1,8) * level
+        self.speedx = random.randrange(-3, 3) * level
 
 
     def update(self):

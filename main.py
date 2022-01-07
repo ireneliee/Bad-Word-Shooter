@@ -136,13 +136,13 @@ powerup_images["shield"] = shield_file
 powerup_images["gun"] = bolt_file
 
 
-def newMeteor():
-    meteor = Mob(meteor_images)
+def newMeteor(level):
+    meteor = Mob(meteor_images, level)
     all_sprites.add(meteor)
     meteors.add(meteor)
 
-def newAsteroid():
-    asteroid = GoodMob(asteroid_images)
+def newAsteroid(level):
+    asteroid = GoodMob(asteroid_images, level)
     all_sprites.add(asteroid)
     asteroids.add(asteroid)
 
@@ -159,7 +159,7 @@ die_sound = pygame.mixer.Sound(path.join(sound_dir, "rumble1.ogg"))
 pygame.mixer.music.load(path.join(sound_dir, "gameover.ogg"))   
 pygame.mixer.music.set_volume(0.1)
 
-pygame.mixer.music.play(1)
+pygame.mixer.music.play(10)
 
 #Game loop
 game_over = True
@@ -179,10 +179,14 @@ while running:
         spaceship = Player(spaceship_img)
         all_sprites.add(spaceship)
 
+        score = 0
+        level = int(score / 1000)
+        if level == 0:
+            level = 1
 
         for i in range(3):
-            newMeteor()
-            newAsteroid()
+            newMeteor(level)
+            newAsteroid(level)
 
         
     #Keep loop running at the right speed
@@ -214,7 +218,11 @@ while running:
             pow = PowerUp(shot.rect.center, powerup_images)
             all_sprites.add(pow)
             powerups.add(pow)
-        newMeteor()
+
+        level = int(score / 1000)
+        if level == 0:
+            level = 1
+        newMeteor(level)
     
     asteroidShots = pygame.sprite.groupcollide(asteroids, bullets, True, True)
     for shot in asteroidShots:
@@ -223,7 +231,10 @@ while running:
         random.choice(explosion_sound).play()
         expl = Explosion(shot.rect.center, 'lg', explosion_anim)
         all_sprites.add(expl)
-        newAsteroid()
+        level = int(score / 1000)
+        if level == 0:
+            level = 1
+        newAsteroid(level)
  
     #kills the spaceshit when meteor hits spaceship
     hits = pygame.sprite.spritecollide(spaceship, meteors, True, pygame.sprite.collide_circle)
@@ -232,7 +243,10 @@ while running:
         random.choice(explosion_sound).play()
         expl = Explosion(hit.rect.center, 'sm', explosion_anim)
         all_sprites.add(expl)
-        newMeteor()
+        level = int(score / 1000)
+        if level == 0:
+            level = 1
+        newMeteor(level)
         if spaceship.shield < 0:
             die_sound.play()
             player_explosion = Explosion(spaceship.rect.center, "player", explosion_anim)
