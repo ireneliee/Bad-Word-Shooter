@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         
         if self.rect.left < 0:
             self.rect.left = 0
-            
+
     def powerup(self):
         self.power += 1
         self.power_time = pygame.time.get_ticks()

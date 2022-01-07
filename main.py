@@ -36,6 +36,20 @@ clock = pygame.time.Clock()
 
 font_name = pygame.font.match_font('arial')
 
+def show_starting_screen():
+    draw_text(screen, "BAD WORDS SHOOTER!", 32, WIDTH / 2, HEIGHT / 4)
+    draw_text(screen, "Arrow keys to move, Space to fire", 22, WIDTH/2, HEIGHT / 2)
+    draw_text(screen, "Press a key to begin", 18, WIDTH / 2, HEIGHT * 3 / 4 )
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                waiting = False
+
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, WHITE)
@@ -128,24 +142,30 @@ die_sound = pygame.mixer.Sound(path.join(sound_dir, "rumble1.ogg"))
 pygame.mixer.music.load(path.join(sound_dir, "gameover.ogg"))   
 pygame.mixer.music.set_volume(0.1)
 
-all_sprites = pygame.sprite.Group()
-meteors = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-powerups = pygame.sprite .Group() 
-
-spaceship = Player(spaceship_img)
-all_sprites.add(spaceship)
-
-
-for i in range(4):
-    newMeteor()
-
-score = 0
 pygame.mixer.music.play(1)
 
 #Game loop
+game_over = True
 running = True
 while running:
+    if game_over:
+        screen.blit(background, background_rect)
+        show_starting_screen()
+        game_over = False
+        
+        all_sprites = pygame.sprite.Group()
+        meteors = pygame.sprite.Group()
+        bullets = pygame.sprite.Group()
+        powerups = pygame.sprite .Group() 
+
+        spaceship = Player(spaceship_img)
+        all_sprites.add(spaceship)
+
+
+        for i in range(4):
+            newMeteor()
+
+        score = 0
     #Keep loop running at the right speed
     clock.tick(FPS)
     #Process input (events)
