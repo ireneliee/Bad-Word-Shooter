@@ -1,8 +1,6 @@
 import pygame
-
-#Define colors
-GREEN = (0,255,0)
-
+from color import Color
+from windowSetting import WindowSetting
 
 WIDTH = 480
 HEIGHT = 600
@@ -11,7 +9,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((50,40))
-        self.image.fill(GREEN)
+        self.image.fill(WindowSetting.GREEN)
         self.speedx = 0
         self.speedy = 0
         self.rect = self.image.get_rect()

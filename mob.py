@@ -1,8 +1,6 @@
 import pygame
 import random
-
-#Define colors
-RED = (255,0,0)
+from windowSetting import WindowSetting
 
 WIDTH = 480
 HEIGHT = 600
@@ -12,7 +10,7 @@ class Mob(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((30,40))
         self.rect = self.image.get_rect()
-        self.image.fill(RED)
+        self.image.fill(WindowSetting.RED)
         self.rect.x = random.randrange(WIDTH-self.rect.width)
         self.rect.y = random.randrange(-100, -40)
         self.speedy = random.randrange(1,8)
