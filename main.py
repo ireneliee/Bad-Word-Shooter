@@ -1,6 +1,7 @@
 import pygame
 import random
 from player import Player
+from mob import Mob
 
 #Constant for Screen Width, Height and FPS
 WIDTH = 480
@@ -25,9 +26,17 @@ pygame.display.set_caption("Bad Words Shooter!")
 clock = pygame.time.Clock()
 #Place all sprites into a group
 all_sprites = pygame.sprite.Group()
+meteors = pygame.sprite.Group()
 
 spaceship = Player()
 all_sprites.add(spaceship)
+
+
+for i in range(8):
+    meteor = Mob()
+    all_sprites.add(meteor)
+    meteors.add(meteor)
+
 
 #Game loop
 running = True
