@@ -16,7 +16,7 @@ BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
 
-class Mob(pygame.sprite.Sprite):
+class GoodMob(pygame.sprite.Sprite):
     def __init__ (self, meteor_images):
         pygame.sprite.Sprite.__init__(self)
         meteor_img = random.choice(meteor_images)

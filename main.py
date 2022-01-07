@@ -5,6 +5,7 @@ from mob import Mob
 from explosion import Explosion
 from os import path 
 from powerUp import PowerUp
+from goodMob import GoodMob
 
 #window setting
 WIDTH = 1200
@@ -78,6 +79,7 @@ def draw_lives(surf, x, y, lives, img):
 # finding the right folder
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
 bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
+good_img_dir = path.join(path.dirname(__file__),"good_image_folder")
 sound_dir = path.join(path.dirname(__file__), "sound_folder")
 explosion_dir = path.join(path.dirname(__file__), "explosion_image_folder")
 
@@ -101,6 +103,16 @@ meteor_list = ['meteor1.png', 'meteor2.png', 'meteor3.png', 'meteor4.png',
 for image in meteor_list:
     meteor_img = pygame.image.load(path.join(bad_img_dir, image)).convert_alpha()
     meteor_images.append(meteor_img)
+
+asteroid_images = []
+asteroid_list = ['asteroid1.png', 'asteroid2.png', 'asteroid3.png', 'asteroid4.png', 'asteroid5.png',
+ 'asteroid6.png', 'asteroid7.png', 'asteroid8.png', 'asteroid9.png', 'asteroid10.png', 'asteroid11.png',
+  'asteroid12.png', 'asteroid13.png', 'asteroid14.png', 'asteroid15.png', 'asteroid16.png', 'asteroid17.png',
+   'asteroid18.png', 'asteroid19.png', 'asteroid20.png']
+
+for image in asteroid_list:
+    asteroid_img = pygame.image.load(path.join(good_img_dir, image)).convert_alpha()
+    asteroid_images.append(asteroid_img)
 
 explosion_anim = {}
 explosion_anim["lg"] = []
@@ -128,6 +140,11 @@ def newMeteor():
     meteor = Mob(meteor_images)
     all_sprites.add(meteor)
     meteors.add(meteor)
+
+def newAsteroid():
+    asteroid = GoodMob(asteroid_images)
+    all_sprites.add(asteroid)
+    asteroids.add(asteroid)
 
 shoot_sound = pygame.mixer.Sound(path.join(sound_dir, "laser.wav"))
 shield_sound = pygame.mixer.Sound(path.join(sound_dir, "shield.wav"))
@@ -157,15 +174,17 @@ while running:
         meteors = pygame.sprite.Group()
         bullets = pygame.sprite.Group()
         powerups = pygame.sprite .Group() 
+        asteroids = pygame.sprite.Group()
 
         spaceship = Player(spaceship_img)
         all_sprites.add(spaceship)
 
 
-        for i in range(4):
+        for i in range(3):
             newMeteor()
+            newAsteroid()
 
-        score = 0
+        
     #Keep loop running at the right speed
     clock.tick(FPS)
     #Process input (events)
@@ -182,10 +201,10 @@ while running:
     all_sprites.update()
     
     #check if a bullet hits a meteor
-    shots = pygame.sprite.groupcollide(meteors, bullets, True, True)
+    meteorShots = pygame.sprite.groupcollide(meteors, bullets, True, True)
 
     #respawn meteors so we won't run out
-    for shot in shots:
+    for shot in meteorShots:
         score = score + (200 - shot.radius)
         random.choice(explosion_sound).play()
         random.choice(explosion_sound).play()
@@ -196,6 +215,15 @@ while running:
             all_sprites.add(pow)
             powerups.add(pow)
         newMeteor()
+    
+    asteroidShots = pygame.sprite.groupcollide(asteroids, bullets, True, True)
+    for shot in asteroidShots:
+        score = score - shot.radius
+        random.choice(explosion_sound).play()
+        random.choice(explosion_sound).play()
+        expl = Explosion(shot.rect.center, 'lg', explosion_anim)
+        all_sprites.add(expl)
+        newAsteroid()
  
     #kills the spaceshit when meteor hits spaceship
     hits = pygame.sprite.spritecollide(spaceship, meteors, True, pygame.sprite.collide_circle)
