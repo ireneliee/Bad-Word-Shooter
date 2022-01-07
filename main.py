@@ -3,10 +3,6 @@ from player import Player
 from mob import Mob
 from os import path 
 
-bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
-good_img_dir = path.join(path.dirname(__file__), "good_image_folder")
-player_img_dir = path.join(path.dirname(__file__),"player_image_folder")
-
 #window setting
 WIDTH = 480
 HEIGHT = 600
@@ -20,6 +16,8 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
+
+
 #Initialise pygame and create window
 pygame.init()
 #Enable sound effects in game
@@ -28,11 +26,16 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 #Set the caption of the screen
 pygame.display.set_caption("Bad Words Shooter!")
 
-clock = pygame.time.Clock()
 
+clock = pygame.time.Clock()
 #Set speed of the game
 clock = pygame.time.Clock()
 #Place all sprites into a group
+
+other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
+background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
+background_rect = background.get_rect()
+
 all_sprites = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
 bullets = pygame.sprite.Group()

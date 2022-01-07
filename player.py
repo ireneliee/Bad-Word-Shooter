@@ -1,5 +1,9 @@
 import pygame
 from bullet import Bullet
+from os import path 
+
+other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
+spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png"))
 
 #window setting
 WIDTH = 480
@@ -15,7 +19,7 @@ BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, spaceship_img):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(spaceship_img, (50, 38))
         self.speedx = 0
