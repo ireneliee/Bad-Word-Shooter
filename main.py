@@ -1,5 +1,6 @@
 import pygame
 import random
+from player import Player
 
 #Constant for Screen Width, Height and FPS
 WIDTH = 480
