@@ -198,7 +198,7 @@ while running:
     for hit in hitsPowerUp:
         if hit.type == "shield":
             shield_sound.play()
-            spaceship.shield += random.randrange(10, 30)
+            spaceship.shield += random.randrange(30, 50)
             if spaceship.shield >= 100:
                 spaceship.shield = 100
             
