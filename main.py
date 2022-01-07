@@ -16,8 +16,6 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
-
-
 #Initialise pygame and create window
 pygame.init()
 #Enable sound effects in game
@@ -80,7 +78,7 @@ while running:
     hits = pygame.sprite.spritecollide(spaceship, meteors, False)
     if hits:
         running: False
-        
+
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
     pygame.display.flip()
