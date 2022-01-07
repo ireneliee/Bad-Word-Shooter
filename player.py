@@ -21,10 +21,11 @@ class Player(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.rect = self.image.get_rect()
-        self.radius = 5
+        self.radius = 20
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
+        self.shield = 100
     
     def update(self):
         self.speedx = 0

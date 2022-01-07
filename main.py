@@ -40,6 +40,17 @@ def draw_text(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
+def create_shield_bar(surf, x, y, health):
+    if health < 0:
+        health = 0
+    BAR_WIDTH = 100
+    BAR_HEIGHT = 10
+
+    rect_outside = pygame.Rect(x, y, BAR_WIDTH, BAR_HEIGHT)
+    rect_inside = pygame.Rect(x, y, health, BAR_HEIGHT)
+    pygame.draw.rect(surf, GREEN, rect_inside)
+    pygame.draw.rect(surf, WHITE, rect_outside, 2)
+
 # finding the right folder
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
 bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
@@ -65,6 +76,11 @@ for image in meteor_list:
     meteor_img = pygame.image.load(path.join(bad_img_dir, image)).convert_alpha()
     meteor_images.append(meteor_img)
 
+def newMeteor():
+    meteor = Mob(meteor_images)
+    all_sprites.add(meteor)
+    meteors.add(meteor)
+
 shoot_sound = pygame.mixer.Sound(path.join(sound_dir, "laser.wav"))
 explosion_sound = []
 explosion_list = ["explosion1.wav", "explosion2.wav"]
@@ -72,7 +88,7 @@ explosion_list = ["explosion1.wav", "explosion2.wav"]
 for snd in explosion_list:
     sound = pygame.mixer.Sound(path.join(sound_dir, snd))
     explosion_sound.append(sound)
-
+  
 pygame.mixer.music.load(path.join(sound_dir, "gameover.ogg"))   
 pygame.mixer.music.set_volume(0.2)
 
@@ -84,10 +100,8 @@ spaceship = Player(spaceship_img)
 all_sprites.add(spaceship)
 
 
-for i in range(8):
-    meteor = Mob(meteor_images)
-    all_sprites.add(meteor)
-    meteors.add(meteor)
+for i in range(4):
+    newMeteor()
 
 score = 0
 pygame.mixer.music.play(1)
@@ -106,9 +120,10 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 spaceship.shoot(all_sprites, bullets, bullet_img, shoot_sound)
+    
     #Update
     all_sprites.update()
-
+    
     #check if a bullet hits a meteor
     shots = pygame.sprite.groupcollide(meteors, bullets, True, True)
 
@@ -121,14 +136,20 @@ while running:
         meteors.add(meteor)
  
     #kills the spaceshit when meteor hits spaceship
-    hits = pygame.sprite.spritecollide(spaceship, meteors, False)
-    if hits:
-        running = False
+    hits = pygame.sprite.spritecollide(spaceship, meteors, True, pygame.sprite.collide_circle)
+    for hit in hits:
+        spaceship.shield -= hit.radius * 1
+        random.choice(explosion_sound).play()
+        newMeteor()
+        if spaceship.shield < 0:
+            running: False
+
 
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
-    draw_text(screen, str(score), 18, WIDTH/2, 10)
-    pygame.display.flip()
+    draw_text(screen, str(score), 18,  WIDTH/2, 10)
+    create_shield_bar(screen, 5, 5, spaceship.shield)
+    pygame.display.flip() 
 #Close the game
 pygame.quit()
 
