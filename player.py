@@ -1,18 +1,29 @@
 import pygame
-from color import Color
-from windowSetting import WindowSetting
 from bullet import Bullet
+
+#window setting
+WIDTH = 480
+HEIGHT = 600
+FPS = 60
+
+#color
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+RED = (255,0,0)
+GREEN = (0,255,0)
+BLUE = (0,0,255)
+YELLOW = (255,255,0)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((50,40))
-        self.image.fill(Color.GREEN)
+        self.image.fill(GREEN)
         self.speedx = 0
         self.speedy = 0
         self.rect = self.image.get_rect()
-        self.rect.centerx = WindowSetting.WIDTH / 2
-        self.rect.bottom = WindowSetting.HEIGHT - 10
+        self.rect.centerx = WIDTH / 2
+        self.rect.bottom = HEIGHT - 10
         self.speedx = 0
     
     def update(self):
@@ -27,8 +38,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
 
-        if self.rect.right > WindowSetting.WIDTH:
-            self.rect.right = WindowSetting.WIDTH
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
         
         if self.rect.left < 0:
             self.rect.left = 0
