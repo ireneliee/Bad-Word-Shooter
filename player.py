@@ -61,6 +61,7 @@ class Player(pygame.sprite.Sprite):
         
         if self.rect.left < 0:
             self.rect.left = 0
+            
     def powerup(self):
         self.power += 1
         self.power_time = pygame.time.get_ticks()
@@ -68,7 +69,7 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, all_sprites, bullets, bullet_img, shoot_sound):
         now = pygame.time.get_ticks()
         if now - self.last_shot > self.shoot_delay:
-            self.last_shot = now()
+            self.last_shot = now
 
             if self.power >= 2:
                 bullet1 = Bullet(self.rect.left, self.rect.centery, bullet_img)

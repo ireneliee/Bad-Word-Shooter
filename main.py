@@ -4,6 +4,7 @@ from player import Player
 from mob import Mob
 from explosion import Explosion
 from os import path 
+from powerUp import PowerUp
 
 #window setting
 WIDTH = 480
@@ -102,6 +103,12 @@ for i in range(9):
     person_exp_img = pygame.image.load(path.join(explosion_dir, filename_person)).convert_alpha()
     explosion_anim["player"].append(img)
 
+powerup_images = {}
+shield_file = pygame.image.load(path.join(other_img_dir, 'powerupRed_shield.png')).convert_alpha()
+bolt_file = pygame.image.load(path.join(other_img_dir, 'powerupYellow_bolt.png')).convert_alpha()
+powerup_images["shield"] = shield_file
+powerup_images["gun"] = bolt_file
+
 
 def newMeteor():
     meteor = Mob(meteor_images)
@@ -109,6 +116,8 @@ def newMeteor():
     meteors.add(meteor)
 
 shoot_sound = pygame.mixer.Sound(path.join(sound_dir, "laser.wav"))
+shield_sound = pygame.mixer.Sound(path.join(sound_dir, "shield.wav"))
+power_sound = pygame.mixer.Sound(path.join(sound_dir, "gun.wav"))
 explosion_sound = []
 explosion_list = ["explosion1.wav", "explosion2.wav"]
 
@@ -121,7 +130,8 @@ pygame.mixer.music.set_volume(0.1)
 
 all_sprites = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
-bullets = pygame.sprite.Group() 
+bullets = pygame.sprite.Group()
+powerups = pygame.sprite .Group() 
 
 spaceship = Player(spaceship_img)
 all_sprites.add(spaceship)
@@ -161,6 +171,10 @@ while running:
         random.choice(explosion_sound).play()
         expl = Explosion(shot.rect.center, 'lg', explosion_anim)
         all_sprites.add(expl)
+        if random.random() > 0.9:
+            pow = PowerUp(shot.rect.center, powerup_images)
+            all_sprites.add(pow)
+            powerups.add(pow)
         newMeteor()
  
     #kills the spaceshit when meteor hits spaceship
@@ -178,9 +192,22 @@ while running:
             spaceship.hide()
             spaceship.lives -= 1
             spaceship.shield = 100
-            if spaceship.lives <= 0:
-                running = False
+            
 
+    hitsPowerUp = pygame.sprite.spritecollide(spaceship, powerups, True)
+    for hit in hitsPowerUp:
+        if hit.type == "shield":
+            shield_sound.play()
+            spaceship.shield += random.randrange(10, 30)
+            if spaceship.shield >= 100:
+                spaceship.shield = 100
+            
+        elif hit.type == "gun":
+            power_sound.play()
+            spaceship.powerup()
+
+    if spaceship.lives <= 0:
+                running = False
 
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
