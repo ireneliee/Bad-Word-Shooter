@@ -159,6 +159,7 @@ while running:
         random.choice(explosion_sound).play()
         random.choice(explosion_sound).play()
         expl = Explosion(shot.rect.center, 'lg', explosion_anim)
+        all_sprites.add(expl)
         newMeteor()
  
     #kills the spaceshit when meteor hits spaceship
@@ -176,7 +177,7 @@ while running:
             spaceship.hide()
             spaceship.lives -= 1
             spaceship.shield = 100
-            if spaceship.lives < 0 and not player_explosion.alive():
+            if spaceship.lives <= 0:
                 running = False
 
 
