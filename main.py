@@ -1,4 +1,5 @@
 import pygame
+import random
 from player import Player
 from mob import Mob
 from os import path 
@@ -64,6 +65,17 @@ for image in meteor_list:
     meteor_img = pygame.image.load(path.join(bad_img_dir, image)).convert_alpha()
     meteor_images.append(meteor_img)
 
+shoot_sound = pygame.mixer.Sound(path.join(sound_dir, "laser.wav"))
+explosion_sound = []
+explosion_list = ["explosion1.wav", "explosion2.wav"]
+
+for snd in explosion_list:
+    sound = pygame.mixer.Sound(path.join(sound_dir, snd))
+    explosion_sound.append(sound)
+
+pygame.mixer.music.load(path.join(sound_dir, "gameover.ogg"))   
+pygame.mixer.music.set_volume(0.2)
+
 all_sprites = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
 bullets = pygame.sprite.Group() 
@@ -78,6 +90,7 @@ for i in range(8):
     meteors.add(meteor)
 
 score = 0
+pygame.mixer.music.play(1)
 
 #Game loop
 running = True
@@ -92,7 +105,7 @@ while running:
         
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                spaceship.shoot(all_sprites, bullets, bullet_img)
+                spaceship.shoot(all_sprites, bullets, bullet_img, shoot_sound)
     #Update
     all_sprites.update()
 
@@ -102,6 +115,7 @@ while running:
     #respawn meteors so we won't run out
     for shot in shots:
         score = score + (50 - shot.radius)
+        random.choice(explosion_sound).play()
         meteor = Mob(meteor_images)
         all_sprites.add(meteor)
         meteors.add(meteor)

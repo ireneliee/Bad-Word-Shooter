@@ -44,8 +44,9 @@ class Player(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
 
-    def shoot(self, all_sprites, bullets, bullet_img):
+    def shoot(self, all_sprites, bullets, bullet_img, shoot_sound):
         bullet = Bullet(self.rect.centerx, self.rect.top, bullet_img)
         all_sprites.add(bullet)
         bullets.add(bullet)
+        shoot_sound.play()
 
