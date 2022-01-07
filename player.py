@@ -15,10 +15,9 @@ BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, spaceship_img):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,40))
-        self.image.fill(GREEN)
+        self.image = pygame.transform.scale(spaceship_img, (50, 38))
         self.speedx = 0
         self.speedy = 0
         self.rect = self.image.get_rect()
