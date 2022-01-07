@@ -52,6 +52,13 @@ def create_shield_bar(surf, x, y, health):
     pygame.draw.rect(surf, GREEN, rect_inside)
     pygame.draw.rect(surf, WHITE, rect_outside, 2)
 
+def draw_lives(surf, x, y, lives, img):
+    for i in range(lives):
+        img_rect = img.get_rect()
+        img_rect.x = x + 30 * i
+        img_rect.y = y
+        surf.blit(img, img_rect)
+
 # finding the right folder
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
 bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
@@ -60,6 +67,7 @@ explosion_dir = path.join(path.dirname(__file__), "explosion_image_folder")
 
 # adding the resources file into the game
 spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png")).convert_alpha()
+spaceship_mini_img = pygame.transform.scale(spaceship_img, (25,19)).convert_alpha()
 bullet_img = pygame.image.load(path.join(other_img_dir, "laserblue.png")).convert_alpha()
 
 background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
@@ -81,6 +89,7 @@ for image in meteor_list:
 explosion_anim = {}
 explosion_anim["lg"] = []
 explosion_anim["sm"] = []
+explosion_anim["player"] = []
 for i in range(9):
     filename = "regularExplosion0{}.png".format(i)
     img = pygame.image.load(path.join(explosion_dir, filename)).convert_alpha()
@@ -88,6 +97,9 @@ for i in range(9):
     explosion_anim["lg"].append(img_lg)
     img_sm = pygame.transform.scale(img, (32, 32))
     explosion_anim["sm"].append(img_sm)
+    filename_person = "sonicExplosion0{}.png".format(i)
+    person_exp_img = pygame.image.load(path.join(explosion_dir, filename_person)).convert_alpha()
+    explosion_anim["player"].append(img)
 
 
 def newMeteor():
@@ -102,7 +114,7 @@ explosion_list = ["explosion1.wav", "explosion2.wav"]
 for snd in explosion_list:
     sound = pygame.mixer.Sound(path.join(sound_dir, snd))
     explosion_sound.append(sound)
-  
+die_sound = pygame.mixer.Sound(path.join(sound_dir, "rumble1.ogg"))
 pygame.mixer.music.load(path.join(sound_dir, "gameover.ogg"))   
 pygame.mixer.music.set_volume(0.1)
 
@@ -145,26 +157,34 @@ while running:
     for shot in shots:
         score = score + (50 - shot.radius)
         random.choice(explosion_sound).play()
-        meteor = Mob(meteor_images)
-        all_sprites.add(meteor)
-        meteors.add(meteor)
+        random.choice(explosion_sound).play()
+        expl = Explosion(shot.rect.center, 'lg', explosion_anim)
+        newMeteor()
  
     #kills the spaceshit when meteor hits spaceship
     hits = pygame.sprite.spritecollide(spaceship, meteors, True, pygame.sprite.collide_circle)
     for hit in hits:
         spaceship.shield -= hit.radius * 1
         random.choice(explosion_sound).play()
-        expl = Explosion(hit.rect.center, 'lg', explosion_anim)
+        expl = Explosion(hit.rect.center, 'sm', explosion_anim)
         all_sprites.add(expl)
         newMeteor()
         if spaceship.shield < 0:
-            running: False
+            die_sound.play()
+            player_explosion = Explosion(spaceship.rect.center, "player", explosion_anim)
+            all_sprites.add(player_explosion)
+            spaceship.hide()
+            spaceship.lives -= 1
+            spaceship.shield = 100
+            if spaceship.lives < 0 and not player_explosion.alive():
+                running = False
 
 
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
     draw_text(screen, str(score), 18,  WIDTH/2, 10)
     create_shield_bar(screen, 5, 5, spaceship.shield)
+    draw_lives(screen, WIDTH - 100, 5, spaceship.lives, spaceship_mini_img)
     pygame.display.flip() 
 #Close the game
 pygame.quit()

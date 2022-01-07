@@ -2,6 +2,7 @@ import pygame
 
 class Explosion(pygame.sprite.Sprite):
     def __init__ (self, center, size, explosion_anim):
+        pygame.sprite.Sprite.__init__(self)
         self.explosion_anim = explosion_anim
         self.size = size
         self.image = self.explosion_anim[self.size][0]

@@ -28,6 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.shoot_delay = 250
         self.last_shot = pygame.time.get_ticks()
         self.lives = 3
+        self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
     
     def update(self):
@@ -44,7 +45,6 @@ class Player(pygame.sprite.Sprite):
             self.speedx = 5
         
         self.rect.x += self.speedx
-        self.rect.y += self.speedy
 
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
