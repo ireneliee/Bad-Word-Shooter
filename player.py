@@ -66,11 +66,24 @@ class Player(pygame.sprite.Sprite):
         self.power_time = pygame.time.get_ticks()
 
     def shoot(self, all_sprites, bullets, bullet_img, shoot_sound):
-        bullet = Bullet(self.rect.centerx, self.rect.top, bullet_img)
-        all_sprites.add(bullet)
-        bullets.add(bullet)
-        shoot_sound.play()
+        now = pygame.time.get_ticks()
+        if now - self.last_shot > self.shoot_delay:
+            self.last_shot = now()
 
+            if self.power >= 2:
+                bullet1 = Bullet(self.rect.left, self.rect.centery, bullet_img)
+                bullet2 = Bullet(self.rect.right, self.rect.centery, bullet_img)
+                all_sprites.add(bullet1)
+                all_sprites.add(bullet2)
+                bullets.add(bullet1)
+                bullets.add(bullet2)
+                shoot_sound.play()
+            else:
+                bullet = Bullet(self.rect.centerx, self.rect.top, bullet_img)
+                all_sprites.add(bullet)
+                bullets.add(bullet)
+                shoot_sound.play()
+        
     def hide(self):
         self.hidden = True
         self.hide_timer = pygame.time.get_ticks()
