@@ -1,9 +1,5 @@
 import pygame
 from bullet import Bullet
-from os import path 
-
-other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
-spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png"))
 
 #window setting
 WIDTH = 480
@@ -19,14 +15,13 @@ BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, spaceship_img):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(spaceship_img, (50, 38))
         self.speedx = 0
         self.speedy = 0
         self.rect = self.image.get_rect()
         self.radius = 5
-        pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
@@ -49,8 +44,8 @@ class Player(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
 
-    def shoot(self, all_sprites, bullets):
-        bullet = Bullet(self.rect.centerx, self.rect.top)
+    def shoot(self, all_sprites, bullets, bullet_img):
+        bullet = Bullet(self.rect.centerx, self.rect.top, bullet_img)
         all_sprites.add(bullet)
         bullets.add(bullet)
 

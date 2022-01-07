@@ -36,26 +36,31 @@ def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, WHITE)
     text_rect = text_surface.get_rect()
-    text_rect.midtop(x, y)
+    text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
+bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
 background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
+spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png")).convert_alpha()
+meteor_img = pygame.image.load(path.join(bad_img_dir, "meteor1.png")).convert_alpha()
+bullet_img = pygame.image.load(path.join(other_img_dir, "laserblue.png")).convert_alpha()
 background_rect = background.get_rect()
 
 all_sprites = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
+bullets = pygame.sprite.Group() 
 
-spaceship = Player()
+spaceship = Player(spaceship_img)
 all_sprites.add(spaceship)
 
 
 for i in range(8):
-    meteor = Mob()
+    meteor = Mob(meteor_img)
     all_sprites.add(meteor)
     meteors.add(meteor)
 
+score = 0
 
 #Game loop
 running = True
@@ -70,7 +75,7 @@ while running:
         
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                spaceship.shoot(all_sprites, bullets)
+                spaceship.shoot(all_sprites, bullets, bullet_img)
     #Update
     all_sprites.update()
 
@@ -79,7 +84,8 @@ while running:
 
     #respawn meteors so we won't run out
     for shot in shots:
-        meteor = Mob()
+        score = score + (50 - shot.radius)
+        meteor = Mob(meteor_img)
         all_sprites.add(meteor)
         meteors.add(meteor)
 
@@ -90,6 +96,7 @@ while running:
 
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
+    draw_text(screen, str(score), 18, WIDTH/2, 10)
     pygame.display.flip()
 #Close the game
 pygame.quit()
