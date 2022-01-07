@@ -26,6 +26,9 @@ clock = pygame.time.Clock()
 #Place all sprites into a group
 all_sprites = pygame.sprite.Group()
 
+spaceship = Player()
+all_sprites.add(spaceship)
+
 #Game loop
 running = True
 while running:

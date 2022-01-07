@@ -36,3 +36,4 @@ class Player(pygame.sprite.Sprite):
         
         if self.rect.left < 0:
             self.rect.left = 0
+
