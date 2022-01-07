@@ -2,9 +2,10 @@ import pygame
 import random
 
 #window setting
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 700
 FPS = 60
+POWEREUP_TIME = 5000
 
 class PowerUp(pygame.sprite.Sprite):
     def __init__ (self, center, powerup_images):

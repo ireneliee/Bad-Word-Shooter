@@ -2,8 +2,8 @@ import pygame
 import random
 
 #window setting
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 700
 FPS = 60
 POWEREUP_TIME = 5000
 
@@ -21,10 +21,10 @@ class Mob(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         meteor_img = random.choice(meteor_images)
 
-        sizex = 100
-        sizey = 100
+        sizex = 150
+        sizey = 150
 
-        if(meteor_img.get_rect().width < 100):
+        if(meteor_img.get_rect().width < 300):
             sizex = meteor_img.get_rect().width
             sizey = meteor_img.get_rect().height
 

@@ -7,8 +7,8 @@ from os import path
 from powerUp import PowerUp
 
 #window setting
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 700
 FPS = 60
 POWEREUP_TIME = 5000
 
@@ -37,9 +37,9 @@ clock = pygame.time.Clock()
 font_name = pygame.font.match_font('arial')
 
 def show_starting_screen():
-    draw_text(screen, "BAD WORDS SHOOTER!", 32, WIDTH / 2, HEIGHT / 4)
-    draw_text(screen, "Arrow keys to move, Space to fire", 22, WIDTH/2, HEIGHT / 2)
-    draw_text(screen, "Press a key to begin", 18, WIDTH / 2, HEIGHT * 3 / 4 )
+    draw_text(screen, "BAD WORDS SHOOTER!", 64, WIDTH / 2, HEIGHT / 4)
+    draw_text(screen, "Arrow keys to move, Space to fire", 44, WIDTH/2, HEIGHT / 2)
+    draw_text(screen, "Press a key to begin", 35, WIDTH / 2, HEIGHT * 3 / 4 )
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -60,7 +60,7 @@ def draw_text(surf, text, size, x, y):
 def create_shield_bar(surf, x, y, health):
     if health < 0:
         health = 0
-    BAR_WIDTH = 100
+    BAR_WIDTH = 200
     BAR_HEIGHT = 10
     fill = (health / 100) * BAR_WIDTH
     rect_outside = pygame.Rect(x, y, BAR_WIDTH, BAR_HEIGHT)
@@ -83,7 +83,7 @@ explosion_dir = path.join(path.dirname(__file__), "explosion_image_folder")
 
 # adding the resources file into the game
 spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png")).convert_alpha()
-spaceship_mini_img = pygame.transform.scale(spaceship_img, (25,19)).convert_alpha()
+spaceship_mini_img = pygame.transform.scale(spaceship_img, (25, 19)).convert_alpha()
 bullet_img = pygame.image.load(path.join(other_img_dir, "laserblue.png")).convert_alpha()
 
 background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
@@ -186,7 +186,7 @@ while running:
 
     #respawn meteors so we won't run out
     for shot in shots:
-        score = score + (50 - shot.radius)
+        score = score + (200 - shot.radius)
         random.choice(explosion_sound).play()
         random.choice(explosion_sound).play()
         expl = Explosion(shot.rect.center, 'lg', explosion_anim)
@@ -231,7 +231,7 @@ while running:
 
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
-    draw_text(screen, str(score), 18,  WIDTH/2, 10)
+    draw_text(screen, str(score), 36,  WIDTH/2, 10)
     create_shield_bar(screen, 5, 5, spaceship.shield)
     draw_lives(screen, WIDTH - 100, 5, spaceship.lives, spaceship_mini_img)
     pygame.display.flip() 

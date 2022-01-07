@@ -1,8 +1,8 @@
 import pygame
 
 #window setting
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 700
 FPS = 60
 POWEREUP_TIME = 5000
 

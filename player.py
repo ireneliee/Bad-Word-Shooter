@@ -2,8 +2,8 @@ import pygame
 from bullet import Bullet
 
 #window setting
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 700
 FPS = 60
 POWEREUP_TIME = 5000
 
@@ -18,7 +18,7 @@ YELLOW = (255,255,0)
 class Player(pygame.sprite.Sprite):
     def __init__(self, spaceship_img):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(spaceship_img, (50, 38))
+        self.image = pygame.transform.scale(spaceship_img, (75,57))
         self.speedx = 0
         self.rect = self.image.get_rect()
         self.radius = 20
@@ -49,10 +49,10 @@ class Player(pygame.sprite.Sprite):
         self.speedx = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT] :
-            self.speedx = -5
+            self.speedx = -10
         
         if keystate[pygame.K_RIGHT]:
-            self.speedx = 5
+            self.speedx = 10
         
         self.rect.x += self.speedx
 
