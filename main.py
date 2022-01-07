@@ -77,7 +77,7 @@ while running:
     #kills the spaceshit when meteor hits spaceship
     hits = pygame.sprite.spritecollide(spaceship, meteors, False)
     if hits:
-        running: False
+        running = False
 
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
