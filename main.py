@@ -81,9 +81,7 @@ while running:
     if hits:
         running: False
     
-    #Draw / Render
-    screen.fill(BLACK)
-    #Blit the sprites images
+    screen.blit(background, background_rect)
     all_sprites.draw(screen)
     pygame.display.flip()
 #Close the game
