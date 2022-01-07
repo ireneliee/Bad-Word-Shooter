@@ -20,7 +20,7 @@ pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 #Set the caption of the screen
-pygame.display.set_caption("My Game")
+pygame.display.set_caption("Bad Words Shooter!")
 #Set speed of the game
 clock = pygame.time.Clock()
 #Place all sprites into a group
