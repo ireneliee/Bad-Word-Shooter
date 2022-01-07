@@ -80,7 +80,7 @@ while running:
     hits = pygame.sprite.spritecollide(spaceship, meteors, False)
     if hits:
         running: False
-    
+        
     screen.blit(background, background_rect)
     all_sprites.draw(screen)
     pygame.display.flip()
