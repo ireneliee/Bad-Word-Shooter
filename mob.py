@@ -16,9 +16,18 @@ YELLOW = (255,255,0)
 
 
 class Mob(pygame.sprite.Sprite):
-    def __init__ (self, meteor_img):
+    def __init__ (self, meteor_images):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(meteor_img, (100, 100))
+        meteor_img = random.choice(meteor_images)
+
+        sizex = 100
+        sizey = 100
+
+        if(meteor_img.get_rect().width < 100):
+            sizex = meteor_img.get_rect().width
+            sizey = meteor_img.get_rect().height
+
+        self.image = pygame.transform.scale(meteor_img, (sizex, sizey))
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * 0.85 / 2)
         self.rect.x = random.randrange(WIDTH-self.rect.width)

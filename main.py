@@ -30,7 +30,7 @@ clock = pygame.time.Clock()
 clock = pygame.time.Clock()
 #Place all sprites into a group
 
-font_name = pygame.font.match_font('Halvetica')
+font_name = pygame.font.match_font('Monotype Corsiva')
 
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
@@ -39,13 +39,30 @@ def draw_text(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
+# finding the right folder
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
 bad_img_dir = path.join(path.dirname(__file__),"bad_image_folder")
-background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
+sound_dir = path.join(path.dirname(__file__), "sound_folder")
+
+# adding the resources file into the game
 spaceship_img = pygame.image.load(path.join(other_img_dir, "spaceship.png")).convert_alpha()
-meteor_img = pygame.image.load(path.join(bad_img_dir, "meteor1.png")).convert_alpha()
 bullet_img = pygame.image.load(path.join(other_img_dir, "laserblue.png")).convert_alpha()
+
+background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
 background_rect = background.get_rect()
+
+meteor_images = []
+meteor_list = ['meteor1.png', 'meteor2.png', 'meteor3.png', 'meteor4.png',
+ 'meteor6.png', 'meteor7.png', 'meteor8.png', 'meteor9.png',
+  'meteor10.png', 'meteor11.png', 'meteor12.png', 'meteor13.png', 'meteor14.png',
+   'meteor15.png', 'meteor16.png', 'meteor17.png', 'meteor18.png', 'meteor19.png',
+    'meteor20.png', 'meteor21.png', 'meteor22.png', 'meteor23.png', 'meteor24.png',
+     'meteor25.png', 'meteor26.png', 'meteor27.png', 'meteor28.png', 'meteor29.png',
+      'meteor30.png', 'meteor31.png']
+
+for image in meteor_list:
+    meteor_img = pygame.image.load(path.join(bad_img_dir, image)).convert_alpha()
+    meteor_images.append(meteor_img)
 
 all_sprites = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
@@ -56,7 +73,7 @@ all_sprites.add(spaceship)
 
 
 for i in range(8):
-    meteor = Mob(meteor_img)
+    meteor = Mob(meteor_images)
     all_sprites.add(meteor)
     meteors.add(meteor)
 
@@ -85,10 +102,10 @@ while running:
     #respawn meteors so we won't run out
     for shot in shots:
         score = score + (50 - shot.radius)
-        meteor = Mob(meteor_img)
+        meteor = Mob(meteor_images)
         all_sprites.add(meteor)
         meteors.add(meteor)
-
+ 
     #kills the spaceshit when meteor hits spaceship
     hits = pygame.sprite.spritecollide(spaceship, meteors, False)
     if hits:
