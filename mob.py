@@ -30,6 +30,7 @@ class Mob(pygame.sprite.Sprite):
         self.speedy = random.randrange(1,8)
         self.speedx = random.randrange(-3, 3)
 
+
     def update(self):
         self.rect.y += self.speedy
         self.rect.x += self.speedx

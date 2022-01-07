@@ -30,6 +30,15 @@ clock = pygame.time.Clock()
 clock = pygame.time.Clock()
 #Place all sprites into a group
 
+font_name = pygame.font.match_font('Halvetica')
+
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop(x, y)
+    surf.blit(text_surface, text_rect)
+
 other_img_dir = path.join(path.dirname(__file__),"other_image_folder")
 background = pygame.image.load(path.join(other_img_dir, "background.png")).convert()
 background_rect = background.get_rect()
