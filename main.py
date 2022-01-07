@@ -9,6 +9,7 @@ from os import path
 WIDTH = 480
 HEIGHT = 600
 FPS = 60
+POWEREUP_TIME = 5000
 
 #color
 WHITE = (255,255,255)
